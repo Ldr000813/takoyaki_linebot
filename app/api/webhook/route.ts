@@ -41,10 +41,129 @@ export async function POST(req: Request) {
         }
 
         // 応答メッセージを作成
-        const responseMessage: line.messagingApi.TextMessage = {
-          type: 'text',
-          text: 'メッセージありがとうございます',
-        };
+        let responseMessage: line.messagingApi.Message;
+
+        if (event.message.text === 'クーポン') {
+          responseMessage = {
+            type: 'flex',
+            altText: 'バーガークーポン',
+            contents: {
+              type: "bubble",
+              hero: {
+                type: "image",
+                url: "https://developers-resource.landpress.line.me/fx/img/01_2_restaurant.png",
+                size: "full",
+                aspectRatio: "20:13",
+                aspectMode: "cover",
+                action: {
+                  type: "uri",
+                  uri: "https://line.me/"
+                }
+              },
+              body: {
+                type: "box",
+                layout: "vertical",
+                spacing: "md",
+                action: {
+                  type: "uri",
+                  uri: "https://line.me/"
+                },
+                contents: [
+                  {
+                    type: "text",
+                    text: "バーガークーポン",
+                    size: "xl",
+                    weight: "bold"
+                  },
+                  {
+                    type: "box",
+                    layout: "vertical",
+                    spacing: "sm",
+                    contents: [
+                      {
+                        type: "box",
+                        layout: "baseline",
+                        contents: [
+                          {
+                            type: "icon",
+                            url: "https://developers-resource.landpress.line.me/fx/img/restaurant_regular_32.png"
+                          },
+                          {
+                            type: "text",
+                            text: "30円引き",
+                            weight: "bold",
+                            margin: "sm",
+                            flex: 0
+                          },
+                          {
+                            type: "text",
+                            text: "30円引き",
+                            size: "sm",
+                            align: "end",
+                            color: "#aaaaaa"
+                          }
+                        ]
+                      },
+                      {
+                        type: "box",
+                        layout: "baseline",
+                        contents: [
+                          {
+                            type: "icon",
+                            url: "https://developers-resource.landpress.line.me/fx/img/restaurant_large_32.png"
+                          },
+                          {
+                            type: "text",
+                            text: "30円引き",
+                            weight: "bold",
+                            margin: "sm",
+                            flex: 0
+                          },
+                          {
+                            type: "text",
+                            text: "30円引き",
+                            size: "sm",
+                            align: "end",
+                            color: "#aaaaaa"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    type: "text",
+                    text: "Sauce, Onions, Pickles, Lettuce & Cheese",
+                    wrap: true,
+                    color: "#aaaaaa",
+                    size: "xxs"
+                  }
+                ]
+              },
+              footer: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "button",
+                    style: "primary",
+                    color: "#905c44",
+                    margin: "xxl",
+                    action: {
+                      type: "uri",
+                      label: "Add to Cart",
+                      uri: "https://line.me/"
+                    }
+                  }
+                ]
+              }
+            } as line.messagingApi.FlexContainer
+          };
+        } else {
+          responseMessage = {
+            type: 'text',
+            text: 'メッセージありがとうございます',
+          };
+        }
 
         // メッセージを返信
         if (event.replyToken) {
